@@ -43,7 +43,7 @@ services:
     container_name: mysql
     image: mcsaky/sysop-mysql
     expose:
-     - "33064/tcp"
+     - "3306/tcp"
     environment:
      - MYSQL_ROOT_PASSWORD=sysop
      - MYSQL_DBNAME=owncloud
@@ -69,7 +69,6 @@ services:
      - MYSQL_DBNAME=owncloud
      - MYSQL_DBPASS=owncloud
      - MYSQL_DBUSER=owncloud
-     - MYSQL_PORT=33064
      - ADMIN=sysop
      - ADMINPASS=sysop
      - TRUSTED_DOMAIN1=nextcloud
