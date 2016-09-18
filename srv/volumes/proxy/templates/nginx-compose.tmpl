@@ -61,7 +61,7 @@ server {
 {{ if (and (exists "/etc/nginx/certs/default.crt") (exists "/etc/nginx/certs/default.key")) }}
 server {
     server_name _; # This is just an invalid value which will never trigger on a real hostname.
-    listen 443 ssl http2;
+    listen 44340 ssl http2;
     access_log /var/log/nginx/access.log vhost;
     return 503;
 
@@ -97,7 +97,7 @@ upstream {{ $host }} {
         {{/* Else default to standard web port 80 */}}
           {{ else }}
                 {{ range $i, $address := $value.Addresses }}
-                        {{ if eq $address.Port "80" }}
+                        {{ if eq $address.Port "8040" }}
                         # {{$value.Name}}
                         server {{ $network.IP }}:{{ $address.Port }};
                         {{ end }}
@@ -133,14 +133,14 @@ upstream {{ $host }} {
 
 server {
     server_name {{ $host }};
-    listen 80 {{ $default_server }};
+    listen 8040 {{ $default_server }};
     access_log /var/log/nginx/access.log vhost;
     return 301 https://$host$request_uri;
 }
 
 server {
     server_name {{ $host }};
-    listen 443 ssl http2 {{ $default_server }};
+    listen 44340 ssl http2 {{ $default_server }};
     access_log /var/log/nginx/access.log vhost;
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
@@ -182,7 +182,7 @@ server {
 
 server {
     server_name {{ $host }};
-    listen 80 {{ $default_server }};
+    listen 8040 {{ $default_server }};
     access_log /var/log/nginx/access.log vhost;
 
     {{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
@@ -208,7 +208,7 @@ server {
 {{ if (and (exists "/etc/nginx/certs/default.crt") (exists "/etc/nginx/certs/default.key")) }}
 server {
     server_name {{ $host }};
-    listen 443 ssl http2 {{ $default_server }};
+    listen 44340 ssl http2 {{ $default_server }};
     access_log /var/log/nginx/access.log vhost;
     return 503;
 
